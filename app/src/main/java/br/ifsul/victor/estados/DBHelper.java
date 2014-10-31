@@ -19,8 +19,15 @@ public class DBHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         String sql = "CREATE TABLE estado (_id INTEGER PRIMARY KEY, nome TEXT);";
         db.execSQL(sql);
+
+        sql = "CREATE TABLE cidade (_id INTEGER PRIMARY KEY, nome TEXT, id_estado INTEGER, " +
+                "FOREIGN KEY (id_estado) REFERENCES estado (_id));";
+        db.execSQL(sql);
     }
 
     @Override
-    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {}
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        String sql = "CREATE TABLE cidade (_id INTEGER PRIMARY KEY, nome TEXT, id_estado INTEGER " +
+                "FOREIGN KEY (id_estado) REFERENCES estado (_id));";
+    }
 }
