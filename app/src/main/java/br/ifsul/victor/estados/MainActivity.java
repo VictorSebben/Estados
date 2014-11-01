@@ -39,4 +39,9 @@ public class MainActivity extends Activity {
         Intent intent = new Intent(this, CadastroActivity.class);
         startActivity(intent);
     }
+
+    public void cadastrarCidades(View view) {
+        Intent intent = new Intent(this, CadastroCidadeActivity.class);
+        startActivity(intent);
+    }
 }

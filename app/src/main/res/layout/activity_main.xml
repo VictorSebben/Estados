@@ -19,4 +19,12 @@
         android:id="@+id/btnEstados"
         android:layout_gravity="center_horizontal"
         android:onClick="cadastrarEstados"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Cidades"
+        android:id="@+id/btnCidades"
+        android:layout_gravity="center_horizontal"
+        android:onClick="cadastrarCidades"/>
 </LinearLayout>

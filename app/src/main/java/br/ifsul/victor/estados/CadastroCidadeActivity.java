@@ -1,17 +1,40 @@
 package br.ifsul.victor.estados;
 
 import android.app.Activity;
+import android.content.ContentValues;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.Toast;
+
+import java.util.List;
+
+import br.ifsul.victor.model.Estado;
 
 
 public class CadastroCidadeActivity extends Activity {
+    private EditText nome;
+    private Spinner estado;
+    private DBHelper dbHelper;
+    private Spinner spinner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cadastro_cidade);
+
+        nome = (EditText) findViewById(R.id.edtNome);
+        estado = (Spinner) findViewById(R.id.spnEstados);
+        dbHelper = new DBHelper(this);
+
+        // spinner para selecionar estado
+        spinner = (Spinner) findViewById(R.id.spnEstados);
+        this.loadSpinnerData();
     }
 
 
@@ -32,5 +55,36 @@ public class CadastroCidadeActivity extends Activity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public void gravarCidade(View view) {
+        SQLiteDatabase db = dbHelper.getWritableDatabase(); // conexão com o banco
+        ContentValues values = new ContentValues();
+        values.put("nome", nome.getText().toString());
+
+        Estado est = (Estado) spinner.getSelectedItem();
+
+        values.put("id_estado", est.getId());
+
+        long result = db.insert("cidade", "_id", values);
+
+        if (result != -1) {
+            Toast.makeText(this, "Sucesso", Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(this, "Falhou", Toast.LENGTH_LONG).show();
+        }
+
+        db.close();
+        nome.setText("");
+    }
+
+    private void loadSpinnerData() {
+        List<Estado> estados = dbHelper.getAllEstados();
+
+        // criar Adapter para o spinner
+        ArrayAdapter<Estado> dataAdapter = new ArrayAdapter<Estado>(this,
+                android.R.layout.simple_spinner_item, estados);
+
+        spinner.setAdapter(dataAdapter);
     }
 }
